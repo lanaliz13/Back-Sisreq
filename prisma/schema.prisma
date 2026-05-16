@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  tipo      TipoUsuario
+  matricula String?
+  criadoEm  DateTime @default(now())
+
+  requerimentos Requerimento[]
+}
+
+model Requerimento {
+  id          Int      @id @default(autoincrement())
+  protocolo   String   @unique
+  tipo        String
+  descricao   String
+  status      StatusRequerimento @default(ABERTO)
+  prioridade  Prioridade @default(MEDIA)
+  justificativaServidor String?
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  anexos    Anexo[]
+}
+
+model Anexo {
+  id              Int      @id @default(autoincrement())
+  nomeArquivo     String
+  caminho         String
+  criadoEm        DateTime @default(now())
+
+  requerimentoId Int
+  requerimento   Requerimento @relation(fields: [requerimentoId], references: [id])
+}
+
+enum TipoUsuario {
+  ALUNO
+  SERVIDOR
+  ADMIN
+}
+
+enum StatusRequerimento {
+  ABERTO
+  EM_ANALISE
+  AGUARDANDO_AJUSTE
+  DEFERIDO
+  INDEFERIDO
+  CANCELADO
+}
+
+enum Prioridade {
+  BAIXA
+  MEDIA
+  ALTA
+}
