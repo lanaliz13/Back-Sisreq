@@ -24,6 +24,8 @@ model Requerimento {
   protocolo   String   @unique
   tipo        String
   descricao   String
+  semestreAtual          String
+  cursoAtual             String
   status      StatusRequerimento @default(ABERTO)
   prioridade  Prioridade @default(MEDIA)
   justificativaServidor String?
