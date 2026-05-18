@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const prisma = require("../prisma");
+require("dotenv").config();
 
 async function loginUsuario(dados) {
   const { email, senha } = dados;
