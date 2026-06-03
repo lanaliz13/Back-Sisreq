@@ -13,6 +13,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  "/uploads",
+  express.static("src/uploads")
+);
+
+// Rotas
 app.use("/auth", authRoutes);
 app.use("/requerimentos", requerimentoRoutes);
 app.use("/usuarios", usuarioRoutes);
