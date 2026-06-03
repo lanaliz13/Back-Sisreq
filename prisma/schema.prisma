@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Usuario {
   id        Int      @id @default(autoincrement())
   nome      String
@@ -14,11 +15,11 @@ model Usuario {
   senha     String
   tipo      TipoUsuario
   matricula String?
+  ativo     Boolean  @default(true)
   criadoEm  DateTime @default(now())
 
   requerimentos Requerimento[]
 }
-
 model Requerimento {
   id          Int      @id @default(autoincrement())
   protocolo   String   @unique
