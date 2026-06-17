@@ -83,9 +83,12 @@ async function listar(req, res) {
 
 async function buscarPorId(req, res) {
   try {
+
     const requerimento =
       await service.buscarPorId(
-        req.params.id
+        req.params.id,
+        req.usuario.id,
+        req.usuario.tipo
       );
 
     if (!requerimento) {
@@ -95,10 +98,15 @@ async function buscarPorId(req, res) {
     }
 
     return res.json(requerimento);
+
   } catch (error) {
+
+    console.error(error);
+
     return res.status(500).json({
       erro: "Erro ao buscar requerimento",
     });
+
   }
 }
 

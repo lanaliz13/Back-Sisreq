@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/", controller.listarUsuarios);
 
+router.post("/", controller.criarUsuario);
+
 router.put("/:id", controller.atualizarUsuario);
 
 router.put("/:id/bloquear", controller.bloquearUsuario);

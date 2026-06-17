@@ -166,15 +166,29 @@ async function listar(filtros) {
 // ======================
 // BUSCAR POR ID
 // ======================
-async function buscarPorId(id) {
-  return prisma.requerimento.findUnique({
-    where: { id: Number(id) },
+async function buscarPorId(
+  id,
+  usuarioId,
+  tipo
+) {
+
+  const where = {
+    id: Number(id),
+  };
+
+  if (tipo === "ALUNO") {
+    where.usuarioId = usuarioId;
+  }
+
+  return prisma.requerimento.findFirst({
+    where,
 
     include: {
       usuario: true,
       anexos: true,
     },
   });
+
 }
 
 // ======================

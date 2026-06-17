@@ -8,7 +8,7 @@ const tiposPermitidos = [
 
 const cursosPermitidos = [
   "Bacharelado em Sistemas de Informação",
-  "Engenharia elétrica",
+  "Engenharia Elétrica",
   "Engenharia Mecânica",
   "Licenciatura em Física",
   "Licenciatura em Matemática",

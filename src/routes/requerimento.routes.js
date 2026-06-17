@@ -47,27 +47,35 @@ router.patch(
 );
 
 // ======================
-// SERVIDOR
+// SERVIDOR / ADMIN
 // ======================
 
 router.get(
   "/",
   autenticar,
-  autorizar("SERVIDOR"),
+  autorizar("SERVIDOR", "ADMIN"),
   controller.listar
 );
 
+// AGORA ALUNO TAMBÉM PODE CONSULTAR
 router.get(
   "/:id",
   autenticar,
-  autorizar("SERVIDOR"),
+  autorizar(
+    "ALUNO",
+    "SERVIDOR",
+    "ADMIN"
+  ),
   controller.buscarPorId
 );
 
 router.patch(
   "/:id/status",
   autenticar,
-  autorizar("SERVIDOR"),
+  autorizar(
+    "SERVIDOR",
+    "ADMIN"
+  ),
   controller.atualizarStatus
 );
 

@@ -110,6 +110,22 @@ async function desbloquearUsuario(req, res) {
   }
 }
 
+const cadastrarUsuario = require("../services/cadastro.service");
+
+async function criarUsuario(req, res) {
+  try {
+    const usuario = await cadastrarUsuario(req.body);
+
+    return res.status(201).json({
+      mensagem: "Usuário criado com sucesso",
+      usuario,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      erro: error.message,
+    });
+  }
+}
 
 
 module.exports = {
@@ -117,4 +133,5 @@ module.exports = {
   atualizarUsuario,
   bloquearUsuario,
   desbloquearUsuario,
+  criarUsuario,
 };
