@@ -60,10 +60,8 @@ enum TipoUsuario {
 
 enum StatusRequerimento {
   ABERTO
-  EM_ANALISE
-  AGUARDANDO_AJUSTE
-  DEFERIDO
-  INDEFERIDO
+  ENCAMINHADO
+  NAO_ENCAMINHADO
   CANCELADO
 }
 
