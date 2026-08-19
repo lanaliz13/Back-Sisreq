@@ -1,24 +1,25 @@
-const dns = require("dns");
-
-dns.setDefaultResultOrder("ipv4first");
-
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
+let transporterPromise = null;
 
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
+async function getTransporter() {
+  if (!transporterPromise) {
+    transporterPromise = nodemailer
+      .createTestAccount()
+      .then((testAccount) => {
+        return nodemailer.createTransport({
+          host: "smtp.ethereal.email",
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+        });
+      });
+  }
+  return transporterPromise;
+}
 
 async function enviarEmail(destinatario, link) {
   console.log("DESTINATARIO:", destinatario);
@@ -27,8 +28,10 @@ async function enviarEmail(destinatario, link) {
   try {
     console.log("Tentando enviar e-mail...");
 
+    const transporter = await getTransporter();
+
     const info = await transporter.sendMail({
-      from: `"SisReq" <${process.env.EMAIL_USER}>`,
+      from: `"SisReq" <sisreq@teste.com>`,
       to: destinatario,
       subject: "Redefinição de senha - SisReq",
 
@@ -41,7 +44,7 @@ async function enviarEmail(destinatario, link) {
           <p>Clique no botão abaixo para redefinir sua senha:</p>
 
           <p>
-            <a
+            
               href="${link}"
               style="
                 display: inline-block;
@@ -66,7 +69,7 @@ async function enviarEmail(destinatario, link) {
     });
 
     console.log("EMAIL ENVIADO!");
-    console.log("Message ID:", info.messageId);
+    console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
 
     return info;
 
