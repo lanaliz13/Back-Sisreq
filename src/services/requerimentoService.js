@@ -10,13 +10,11 @@ const {
 // ======================
 // CONSTANTES
 // ======================
-const STATUS_FINALIZADOS = ["DEFERIDO", "INDEFERIDO", "CANCELADO"];
+const STATUS_FINALIZADOS = ["ENCAMINHADO", "NAO_ENCAMINHADO", "CANCELADO"];
 const STATUS_PERMITIDOS = [
   "ABERTO",
-  "EM_ANALISE",
-  "AGUARDANDO_AJUSTE",
-  "DEFERIDO",
-  "INDEFERIDO",
+  "ENCAMINHADO",
+  "NAO_ENCAMINHADO",
   "CANCELADO",
 ];
 // ======================
@@ -68,13 +66,9 @@ async function criar(body, files, usuarioId) {
 // DASHBOARD
 // ======================
 async function dashboard(usuarioId) {
-  const [abertos, emAnalise, finalizados] = await Promise.all([
+  const [abertos, finalizados] = await Promise.all([
     prisma.requerimento.count({
       where: { usuarioId, status: "ABERTO" },
-    }),
-
-    prisma.requerimento.count({
-      where: { usuarioId, status: "EM_ANALISE" },
     }),
 
     prisma.requerimento.count({
