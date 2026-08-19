@@ -17,7 +17,6 @@ const finalizados = await prisma.requerimento.count({
     status: {
       in: [
         "ENCAMINHADO",
-        "CANCELADO",
       ],
     },
   },
