@@ -11,23 +11,13 @@ async function dashboardAluno(req, res) {
       },
     });
 
-    const emAnalise = await prisma.requerimento.count({
-      where: {
-        usuarioId,
-        OR: [
-          { status: "EM_ANALISE" },
-          { status: "AGUARDANDO_AJUSTE" },
-        ],
-      },
-    });
-
     const finalizados = await prisma.requerimento.count({
       where: {
         usuarioId,
         status: {
           in: [
-            "DEFERIDO",
-            "INDEFERIDO",
+            "ENCAMINHADO",
+            "NAO_ENCAMINHADO",
             "CANCELADO",
           ],
         },
@@ -49,7 +39,6 @@ async function dashboardAluno(req, res) {
 
     return res.json({
       abertos,
-      emAnalise,
       finalizados,
       notificacoes: notificacoes.map(
         (req) => ({
@@ -88,20 +77,14 @@ async function dashboardAdmin(req, res) {
     const totalPendencias =
       await prisma.requerimento.count({
         where: {
-          OR: [
-            { status: "ABERTO" },
-            { status: "EM_ANALISE" },
-          ],
+          status: "ABERTO",
         },
       });
 
     const pendencias =
       await prisma.requerimento.findMany({
         where: {
-          OR: [
-            { status: "ABERTO" },
-            { status: "EM_ANALISE" },
-          ],
+          status: "ABERTO",
         },
 
         include: {
@@ -152,20 +135,13 @@ async function dashboardServidor(req, res) {
         },
       });
 
-    const totalAnalise =
-      await prisma.requerimento.count({
-        where: {
-          status: "EM_ANALISE",
-        },
-      });
-
     const totalFinalizados =
       await prisma.requerimento.count({
         where: {
           status: {
             in: [
-              "DEFERIDO",
-              "INDEFERIDO",
+              "ENCAMINHADO",
+              "NAO_ENCAMINHADO",
               "CANCELADO",
             ],
           },
@@ -187,7 +163,6 @@ async function dashboardServidor(req, res) {
 
     return res.json({
       totalPendentes,
-      totalAnalise,
       totalFinalizados,
       requerimentos,
     });
