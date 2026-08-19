@@ -10,12 +10,14 @@ const {
 // ======================
 // CONSTANTES
 // ======================
-const STATUS_FINALIZADOS = ["ENCAMINHADO", "NAO_ENCAMINHADO", "CANCELADO"];
+const STATUS_FINALIZADOS = [
+  "ENCAMINHADO",
+];
+
 const STATUS_PERMITIDOS = [
   "ABERTO",
   "ENCAMINHADO",
   "NAO_ENCAMINHADO",
-  "CANCELADO",
 ];
 // ======================
 // CRIAR REQUERIMENTO
@@ -68,17 +70,24 @@ async function criar(body, files, usuarioId) {
 async function dashboard(usuarioId) {
   const [abertos, finalizados] = await Promise.all([
     prisma.requerimento.count({
-      where: { usuarioId, status: "ABERTO" },
+      where: {
+        usuarioId,
+        status: "ABERTO",
+      },
     }),
 
     prisma.requerimento.count({
-      where: { usuarioId, status: { in: STATUS_FINALIZADOS } },
+      where: {
+        usuarioId,
+        status: {
+          in: STATUS_FINALIZADOS,
+        },
+      },
     }),
   ]);
 
   return {
     abertos,
-    emAnalise,
     finalizados,
   };
 }
@@ -232,33 +241,6 @@ async function atualizarStatus(id, dados) {
   });
 }
 
-// ======================
-// CANCELAR
-// ======================
-async function cancelar(id, usuarioId) {
-  const requerimento = await prisma.requerimento.findFirst({
-    where: {
-      id: Number(id),
-      usuarioId,
-    },
-  });
-
-  if (!requerimento) {
-    throw new Error("NAO_ENCONTRADO");
-  }
-
-  if (STATUS_FINALIZADOS.includes(requerimento.status)) {
-    throw new Error("FINALIZADO");
-  }
-
-  return prisma.requerimento.update({
-    where: { id: Number(id) },
-
-    data: {
-      status: "CANCELADO",
-    },
-  });
-}
 
 module.exports = {
   criar,
@@ -266,6 +248,5 @@ module.exports = {
   meus,
   listar,
   buscarPorId,
-  atualizarStatus,
-  cancelar,
+  atualizarStatus
 };

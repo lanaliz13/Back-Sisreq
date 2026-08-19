@@ -62,7 +62,6 @@ enum StatusRequerimento {
   ABERTO
   ENCAMINHADO
   NAO_ENCAMINHADO
-  CANCELADO
 }
 
 enum Prioridade {

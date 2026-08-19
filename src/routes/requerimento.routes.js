@@ -39,13 +39,6 @@ router.get(
   controller.meus
 );
 
-router.patch(
-  "/:id/cancelar",
-  autenticar,
-  autorizar("ALUNO"),
-  controller.cancelar
-);
-
 // ======================
 // SERVIDOR / ADMIN
 // ======================

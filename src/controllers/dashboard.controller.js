@@ -11,18 +11,17 @@ async function dashboardAluno(req, res) {
       },
     });
 
-    const finalizados = await prisma.requerimento.count({
-      where: {
-        usuarioId,
-        status: {
-          in: [
-            "ENCAMINHADO",
-            "NAO_ENCAMINHADO",
-            "CANCELADO",
-          ],
-        },
-      },
-    });
+const finalizados = await prisma.requerimento.count({
+  where: {
+    usuarioId,
+    status: {
+      in: [
+        "ENCAMINHADO",
+        "CANCELADO",
+      ],
+    },
+  },
+});
 
     const notificacoes =
       await prisma.requerimento.findMany({
@@ -135,18 +134,16 @@ async function dashboardServidor(req, res) {
         },
       });
 
-    const totalFinalizados =
-      await prisma.requerimento.count({
-        where: {
-          status: {
-            in: [
-              "ENCAMINHADO",
-              "NAO_ENCAMINHADO",
-              "CANCELADO",
-            ],
-          },
-        },
-      });
+   const totalFinalizados =
+  await prisma.requerimento.count({
+    where: {
+      status: {
+        in: [
+          "ENCAMINHADO",
+        ],
+      },
+    },
+  });
 
     const requerimentos =
       await prisma.requerimento.findMany({

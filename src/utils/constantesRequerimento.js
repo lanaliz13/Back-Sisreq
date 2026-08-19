@@ -13,7 +13,10 @@ const cursosPermitidos = [
   "Licenciatura em Física",
   "Licenciatura em Matemática",
   "Tecnólogo em Mecatrônica Industrial",
-];
+  "Integrado em Informática",
+  "Integrado em Mecânica",
+  "Integrado em Eletrotécnica"
+]
 
 module.exports = {
   tiposPermitidos,
